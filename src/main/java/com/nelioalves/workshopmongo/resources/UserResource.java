@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.nelioalves.workshopmongo.domain.Post;
 import com.nelioalves.workshopmongo.domain.User;
 import com.nelioalves.workshopmongo.dto.UserDTO;
 import com.nelioalves.workshopmongo.services.UserService;
@@ -30,6 +31,7 @@ public class UserResource {
         List<UserDTO> listDto = list.stream().map(x -> new UserDTO(x)).collect(Collectors.toList()); // Converte uma Lista em outra de outro tipo
         return ResponseEntity.ok().body(listDto);
     }
+
 
     @RequestMapping(value ="/{id}" , method = RequestMethod.GET) // Busca no banco de Dados e guarda na Lista e devolve a lista na resposta da requisição 
         public ResponseEntity<UserDTO>  findByID(@PathVariable String id){
@@ -63,6 +65,15 @@ public class UserResource {
         return ResponseEntity.noContent().build();
 
        
+    }
+    
+
+    // GET POSTS
+
+     @RequestMapping(value ="/{id}/posts" , method = RequestMethod.GET) // Busca no banco de Dados os posts do Usuario
+        public ResponseEntity<List<Post>>  findPosts(@PathVariable String id){
+        User obj = service.findById(id);
+        return ResponseEntity.ok().body(obj.getPosts());
     }
 
 
